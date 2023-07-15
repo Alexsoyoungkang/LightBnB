@@ -1,5 +1,20 @@
 const properties = require("./json/properties.json");
 const users = require("./json/users.json");
+// Connection
+const { Pool } = require('pg');
+
+//Connect to database
+const pool = new Pool({
+  user: 'vagrant',
+  password: '123',
+  host: 'localhost',
+  database: 'lightbnb'
+});
+
+// the following assumes that you named your connection variable `pool`
+pool.query(`SELECT title FROM properties LIMIT 10;`).then(response => {console.log(response)})
+
+
 
 /// Users
 
