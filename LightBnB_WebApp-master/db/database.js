@@ -11,10 +11,6 @@ const pool = new Pool({
   database: 'lightbnb'
 });
 
-// the following assumes that you named your connection variable `pool`
-pool.query(`SELECT title FROM properties LIMIT 10;`).then(response => {console.log(response)})
-
-
 
 /// Users
 
@@ -24,14 +20,18 @@ pool.query(`SELECT title FROM properties LIMIT 10;`).then(response => {console.l
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithEmail = function(email) {
-  let resolvedUser = null;
-  for (const userId in users) {
-    const user = users[userId];
-    if (user?.email.toLowerCase() === email?.toLowerCase()) {
-      resolvedUser = user;
-    }
-  }
-  return Promise.resolve(resolvedUser);
+  return pool
+    .query(`SELECT * FROM users WHERE email = $1`, [email])
+    .then((result) => {
+      if (!result.rows.length) {
+        return null; // If that user email does not exist return null.
+      }
+      console.log('result',result.rows[0]);
+      return result.rows[0]; // The promise should resolve with a user object - extracts the object from the array
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
 };
 
 /**
@@ -40,7 +40,18 @@ const getUserWithEmail = function(email) {
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithId = function(id) {
-  return Promise.resolve(users[id]);
+  return pool
+    .query(`SELECT * FROM users WHERE id = $1;`, [id])
+    .then((result) => {
+      if (!result.rows.length) {
+        return null; // If that user id does not exist return null.
+      }
+      console.log(result.rows[0]);
+      return result.rows[0]; // // The promise should resolve with a user object - extracts the object from the array
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
 };
 
 /**
@@ -49,10 +60,20 @@ const getUserWithId = function(id) {
  * @return {Promise<{}>} A promise to the user.
  */
 const addUser = function(user) {
-  const userId = Object.keys(users).length + 1;
-  user.id = userId;
-  users[userId] = user;
-  return Promise.resolve(user);
+  const queryString = `
+    INSERT INTO users (name, email, password)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+    `;
+
+  return pool
+    .query(queryString, [user.name, user.email, user.password]) // Accepts a user object that will have a name, email, and password property
+    .then((result) => {
+      return result.rows[0];
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
 };
 
 /// Reservations
@@ -76,14 +97,14 @@ const getAllReservations = function(guest_id, limit = 10) {
  */
 const getAllProperties = function(options, limit = 10) { //a default value of 10.
   return pool // uses a database connection pool (referred to as pool) to execute a SQL query.
-  .query(`SELECT * FROM properties LIMIT $1`, [limit]) //  takes two arguments: the SQL query as a string and an array of values.
-  .then((result) => {
-    console.log(result.rows); // The rows property of the result object contains an array of rows returned by the query.
-    return result.rows; // returns the rows obtained from the query. 
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
+    .query(`SELECT * FROM properties LIMIT $1`, [limit]) //  takes two arguments: the SQL query as a string and an array of values.
+    .then((result) => {
+      console.log(result.rows); // The rows property of the result object contains an array of rows returned by the query.
+      return result.rows; // returns the rows obtained from the query.
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
 };
 
 /**
