@@ -74,12 +74,12 @@ const getAllReservations = function(guest_id, limit = 10) {
  * @param {*} limit The number of results to return.
  * @return {Promise<[{}]>}  A promise to the properties.
  */
-const getAllProperties = function(options, limit = 10) {
-  return pool
-  .query(`SELECT * FROM properties LIMIT $1`, [limit])
+const getAllProperties = function(options, limit = 10) { //a default value of 10.
+  return pool // uses a database connection pool (referred to as pool) to execute a SQL query.
+  .query(`SELECT * FROM properties LIMIT $1`, [limit]) //  takes two arguments: the SQL query as a string and an array of values.
   .then((result) => {
-    console.log(result.rows);
-    return result.rows;
+    console.log(result.rows); // The rows property of the result object contains an array of rows returned by the query.
+    return result.rows; // returns the rows obtained from the query. 
   })
   .catch((err) => {
     console.log(err.message);
