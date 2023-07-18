@@ -10,8 +10,9 @@ A simple multi-page Airbnb clone that uses server-side Javascript to display the
 ## Getting Started
 
 1. Clone this repository onto your local device.
-2. Install dependencies using the `npm install` command and make sure you have PostgreSQL installed. You can install it using the `npm install pg` command.
-3. Start the web server using the `npm run local` command in LightBnB_WebApp-master directory. The app will be served at http://localhost:3000/.
+2. Make sure you have PostgreSQL installed.
+3. Install dependencies using the `npm install` command inside the LightBnB_WebApp-master directory.
+3. Start the web server using the `npm run local` command. The app will be served at http://localhost:3000/.
 4. Go to http://localhost:3000/ in your browser.
 
 ## Dependencies
