@@ -53,3 +53,13 @@
 * `routes` contains the router files which are responsible for any HTTP requests to `/users/something` or `/api/something`. 
 * `styles` contains all of the sass files. 
 * `server.js` is the entry point to the application. This connects the routes to the database.
+
+
+## Dependencies
+  - node v.12 or above
+  - "bcryptjs": "^2.4.3"
+  - "cookie-session": "^1.3.3"
+  - "dotenv": "^16.3.1"
+  - "express": "^4.17.1"
+  - "nodemon": "^1.19.1"
+  - "pg": "^8.11.1"
