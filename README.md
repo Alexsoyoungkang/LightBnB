@@ -5,6 +5,7 @@ A simple multi-page Airbnb clone that uses server-side Javascript to display the
 
 ## Final Project
 
+!["Homepage"](https://raw.githubusercontent.com/Alexsoyoungkang/LightBnB/1ea4d84b788251e32427811ca8db72b146e7d584/docs/lightbnb_image.png)
 
 ## Getting Started
 
