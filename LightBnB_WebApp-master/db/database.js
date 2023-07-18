@@ -47,7 +47,7 @@ const getUserWithId = function(id) {
         return null; // If that user id does not exist return null.
       }
       console.log(result.rows[0]);
-      return result.rows[0]; // // The promise should resolve with a user object - extracts the object from the array
+      return result.rows[0]; // The promise should resolve with a user object - extracts the object from the array
     })
     .catch((err) => {
       console.log(err.message);
@@ -137,12 +137,15 @@ const getAllProperties = function(options, limit = 10) {
     queryString += `AND owner_id = $${queryParams.length} `;
   }
 
-  if (options.minimum_price_per_night && options.maximum_price_per_night) { // Checks if both a minimum_price_per_night and a maximum_price_per_night are provided
+  if (options.minimum_price_per_night) { // Checks if a minimum_price_per_night is provided
     queryParams.push(`${Number(options.minimum_price_per_night)}` * 100); // The database stores amounts in cents
     queryString += `AND cost_per_night >= $${queryParams.length}`; // placeholder for the min price
+  }
+  if (options.maximum_price_per_night) { // Checks if a maximum_price_per_night is provided
     queryParams.push(`${Number(options.maximum_price_per_night)}` * 100);
     queryString += `AND cost_per_night <= $${queryParams.length}`;
   }
+
   // 4. appends the GROUP BY clause to the queryString, grouping by the property's ID.
   queryString += `
   GROUP BY properties.id
